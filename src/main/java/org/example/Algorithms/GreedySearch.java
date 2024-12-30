@@ -49,11 +49,6 @@ public class GreedySearch extends Algorithm {
 
             while (!queue.isEmpty()) {
                 int[][] childState = queue.removeFirst();
-                /*
-                if (isUnique(childState)) {
-                    priorityQueue.add(childState);
-                }
-                */
                 priorityQueue.add(childState);
             }
 

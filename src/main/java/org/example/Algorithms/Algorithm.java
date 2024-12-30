@@ -158,6 +158,5 @@ public class Algorithm extends StateManager implements SearchMethod {
 
     @Override
     public void search(int[][] initialState) {
-
     }
 }

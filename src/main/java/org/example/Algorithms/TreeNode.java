@@ -2,14 +2,14 @@ package org.example.Algorithms;
 
 public class TreeNode {
 
-    public int pathCost;
-    public int evaluationValue;
-    public int heuristicValue;
+    private int pathCost;
+    private int evaluationValue;
+    private int heuristicValue;
     int[][] nodeValue;
 
     public TreeNode(int[][] nodeValue, int heuristicValue) {
         this.heuristicValue = heuristicValue;
-        this.evaluationValue = this.pathCost + heuristicValue;
+        this.evaluationValue = this.pathCost + this.heuristicValue;
         this.nodeValue = nodeValue;
     }
 
