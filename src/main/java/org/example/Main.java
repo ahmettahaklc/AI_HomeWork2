@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Algorithms.AStarSearch;
 import org.example.Algorithms.GreedySearch;
 
 import java.util.ArrayList;
@@ -36,12 +37,15 @@ public class Main {
         System.out.println("Initial States are created");
 
         GreedySearch greedySearch = new GreedySearch();
+        AStarSearch  aStarSearch = new AStarSearch();
         // Run all search algorithms for each initial state
         for (int i = 0; i < 10; i++) {
 
-
             System.out.println("Greedy Search algorithm is started");
             greedySearch.search(initialStates.get(i));
+
+            System.out.println("A* Search algorithm is started");
+            aStarSearch.search(initialStates.get(i));
 
             System.out.println("------------------------------------------");
             System.out.println();

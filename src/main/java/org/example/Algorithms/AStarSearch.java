@@ -5,21 +5,14 @@ import java.util.PriorityQueue;
 
 public class AStarSearch extends Algorithm {
 
-    public int evaluationValue;
-    public int heuristicValue;
-
-    public AStarSearch(int heuristicValue) {
-        this.evaluationValue = heuristicValue+1;
-    }
-
     public static int heuristicFunction(int[][] initialState) {
         int cost = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 int value = initialState[i][j];
-                if (value !=0) {
-                    int TargetRow = value/3;
-                    int TargetColumn = value%3;
+                if (value != 0) {
+                    int TargetRow = value / 3;
+                    int TargetColumn = value % 3;
                     cost += Math.abs(TargetRow - i) + Math.abs(TargetColumn - j);
                 }
             }
@@ -29,16 +22,22 @@ public class AStarSearch extends Algorithm {
 
     @Override
     public void search(int[][] initialState) {
-        PriorityQueue<int[][]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(GreedySearch::heuristicFunction));
-        priorityQueue.add(initialState);
+        TreeNode rootNode = new TreeNode(initialState, heuristicFunction(initialState));
+        rootNode.setPathCost(0);
+
+        PriorityQueue<TreeNode> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(node -> node.evaluationValue));
+        priorityQueue.add(rootNode);
+        int maxFringeSize = 0;
 
         while (!priorityQueue.isEmpty()) {
-            int[][] currentState = priorityQueue.poll();
+            TreeNode currentNode = priorityQueue.poll();
             numberOfStep++;
 
-            if (checkingState(currentState)) {
+            maxFringeSize = Math.max(maxFringeSize, priorityQueue.size());
+
+            if (checkingNode(currentNode)) {
                 System.out.println("Goal State is founded");
-                System.out.println("Maximum size of fringe: "+priorityQueue.size());
+                System.out.println("Maximum size of fringe: " + maxFringeSize);
                 System.out.println("Number of nodes expanded for solved problems:" + --numberOfStep);
                 StateManager.clear();
                 System.out.println();
@@ -46,21 +45,19 @@ public class AStarSearch extends Algorithm {
             }
 
             //Generate child state
-            Algorithm.generateChildren(currentState);
+            Algorithm.generateChildNodes(currentNode);
 
             while (!queue.isEmpty()) {
-                int[][] childState = queue.removeFirst();
-                /*
-                if (isUnique(childState)) {
-                    priorityQueue.add(childState);
-                }
-                */
-                priorityQueue.add(childState);
+                int[][] childState = queue.remove();
+                TreeNode childNode = new TreeNode(childState, heuristicFunction(childState));
+                childNode.setPathCost(currentNode.getPathCost() + 1);
+                childNode.setEvaluationValue(childNode.getPathCost() + childNode.heuristicValue);
+                priorityQueue.add(childNode);
             }
 
         }
-        System.out.println("Greedy Search could not found goal state");
-        System.out.println("Maximum size of fringe: "+queue.size());
+        System.out.println("A* Search could not found goal state");
+        System.out.println("Maximum size of fringe: " + maxFringeSize);
         System.out.println("Number of nodes expanded for solved problems:" + numberOfStep);
         StateManager.clear();
         System.out.println();

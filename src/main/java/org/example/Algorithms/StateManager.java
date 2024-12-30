@@ -8,7 +8,7 @@ public class StateManager {
     private static final Set<List<List<Integer>>> seenStates = new HashSet<>();
     protected static final LinkedList<int[][]> queue = new LinkedList<>();
     public static final int[][] goal_state = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
-    protected static int numberOfStep=0;
+    protected static int numberOfStep = 0;
 
     public static boolean isUnique(int[][] state) {
         // Convert the 2D array to a list of lists for easy hashing and equality checking
@@ -36,10 +36,20 @@ public class StateManager {
         return true;
     }
 
+    public static boolean checkingNode(TreeNode currentNode) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (goal_state[i][j] != currentNode.nodeValue[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public static void clear() {
         queue.clear();
         seenStates.clear();
-        numberOfStep=0;
+        numberOfStep = 0;
     }
 }

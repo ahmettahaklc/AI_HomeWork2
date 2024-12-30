@@ -27,13 +27,17 @@ public class GreedySearch extends Algorithm {
         PriorityQueue<int[][]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(GreedySearch::heuristicFunction));
         priorityQueue.add(initialState);
 
+        int maxFringeSize = 0;
+
         while (!priorityQueue.isEmpty()) {
             int[][] currentState = priorityQueue.poll();
             numberOfStep++;
 
+            maxFringeSize = Math.max(maxFringeSize, priorityQueue.size());
+
             if (checkingState(currentState)) {
                 System.out.println("Goal State is founded");
-                System.out.println("Maximum size of fringe: "+priorityQueue.size());
+                System.out.println("Maximum size of fringe: " + maxFringeSize);
                 System.out.println("Number of nodes expanded for solved problems:" + --numberOfStep);
                 StateManager.clear();
                 System.out.println();
@@ -55,7 +59,7 @@ public class GreedySearch extends Algorithm {
 
         }
         System.out.println("Greedy Search could not found goal state");
-        System.out.println("Maximum size of fringe: "+queue.size());
+        System.out.println("Maximum size of fringe: " + maxFringeSize);
         System.out.println("Number of nodes expanded for solved problems:" + numberOfStep);
         StateManager.clear();
         System.out.println();
